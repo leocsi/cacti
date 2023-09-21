@@ -22,6 +22,7 @@ public class ShipperController {
     List<Shipper> getAll() {
         return shipperService.readAllShippers();
     }
+
     @GetMapping("/{id}")
     Shipper getById(@PathVariable Long id) {
         try {
@@ -33,10 +34,10 @@ public class ShipperController {
 
     @PostMapping("/add")
     ResponseEntity<String> addNewShipper(@RequestBody Shipper shipper) {
-        try{
+        try {
             shipperService.addNewShipper(shipper);
             return ResponseEntity.ok("New shipper added");
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body("Something went wrong");
         }
     }
@@ -58,6 +59,25 @@ public class ShipperController {
         } catch (Exception e){
             return ResponseEntity.badRequest().body("Something went wrong");
         }
+    }
+
+    @GetMapping("/phoneBook")
+    List<String> readShipperPhoneList() {
+        try {
+            return shipperService.getPhoneBook();
+        } catch (ShipperNotFoundException ex) {
+            throw new ResponseStatusException(NOT_FOUND, ex.getMessage());
+        }
+    }
+
+    @GetMapping("/nameBook")
+    List<String> readShipperNames() {
+        try {
+            return shipperService.getNames();
+        } catch (ShipperNotFoundException e) {
+            throw new ResponseStatusException(NOT_FOUND, e.getMessage());
+        }
+
     }
 
 }
