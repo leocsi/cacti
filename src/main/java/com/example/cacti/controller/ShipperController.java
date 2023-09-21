@@ -41,6 +41,7 @@ public class ShipperController {
             return ResponseEntity.badRequest().body("Something went wrong");
         }
     }
+
     @GetMapping("/phoneBook")
     List<String> readShipperPhoneList() {
         try {
@@ -49,4 +50,15 @@ public class ShipperController {
             throw new ResponseStatusException(NOT_FOUND, ex.getMessage());
         }
     }
+
+    @GetMapping("/nameBook")
+    List<String> readShipperNames() {
+        try {
+            return shipperService.getNames();
+        } catch (ShipperNotFoundException e) {
+            throw new ResponseStatusException(NOT_FOUND, e.getMessage());
+        }
+
+    }
+
 }

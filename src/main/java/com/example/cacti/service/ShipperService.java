@@ -17,6 +17,7 @@ public class ShipperService {
     public List<Shipper> readAllShippers() {
         return shipperRepository.findAll();
     }
+
     public Shipper readShipperById(Long id) {
         return shipperRepository.findById(id).orElseThrow(() -> new ShipperNotFoundException("No Shipper with  id: [ " + id + "]"));
     }
@@ -24,6 +25,7 @@ public class ShipperService {
     public void addNewShipper(Shipper shipper) {
         shipperRepository.save(shipper);
     }
+
     public List<String> getPhoneBook() {
         List<String> phoneList = new ArrayList<>();
         for (Shipper shipper : shipperRepository.findAll()) {
@@ -31,4 +33,13 @@ public class ShipperService {
         }
         return phoneList;
     }
+
+    public List<String> getNames() {
+        List<String> names = new ArrayList<>();
+        for (Shipper s : shipperRepository.findAll()) {
+            names.add(s.getName());
+        }
+        return names;
+    }
+
 }
