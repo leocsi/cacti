@@ -20,4 +20,7 @@ public class ShipperService {
         return shipperRepository.findById(id).orElseThrow(() -> new ShipperNotFoundException("No Shipper with  id: [ " + id + "]"));
     }
 
+    public void addNewShipper(Shipper shipper){
+        shipperRepository.save(shipper);
+    }
 }
