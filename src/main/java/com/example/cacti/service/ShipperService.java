@@ -23,4 +23,11 @@ public class ShipperService {
     public void addNewShipper(Shipper shipper){
         shipperRepository.save(shipper);
     }
+
+    public void deleteShipper(Shipper shipper) {
+        shipperRepository.delete(shipper);
+    }
+    public void deleteShipperByID(Long id){
+        shipperRepository.deleteById(id);
+    }
 }

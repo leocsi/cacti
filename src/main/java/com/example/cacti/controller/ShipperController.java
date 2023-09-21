@@ -40,4 +40,24 @@ public class ShipperController {
             return ResponseEntity.badRequest().body("Something went wrong");
         }
     }
+
+    @DeleteMapping("/delete")
+    ResponseEntity<String> deleteShipper(@RequestBody Shipper shipper) {
+        try{
+            shipperService.deleteShipper(shipper);
+            return ResponseEntity.ok("Shipper deleted");
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body("Something went wrong");
+        }
+    }
+    @DeleteMapping("/delete/{id}")
+    ResponseEntity<String> deleteShipper(@PathVariable Long id) {
+        try{
+            shipperService.deleteShipperByID(id);
+            return ResponseEntity.ok("Shipper Deleted");
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body("Something went wrong");
+        }
+    }
+
 }
