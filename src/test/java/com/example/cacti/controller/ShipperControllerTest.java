@@ -199,6 +199,35 @@ class ShipperControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    public void testReadShipperPhoneList_Success() throws Exception {
+
+        String JSON = mockMvc.perform(
+                        get(SHIPPER_ENDPOINT_URL + "/phoneBook")
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        List<String> shippersPhoneBook = objectMapper.readValue(JSON, new TypeReference<>() {
+        });
+
+        // Then
+        assertFalse(shippersPhoneBook.isEmpty());
+        assertEquals(DB_SEEDER_SHIPPERS.size(), shippersPhoneBook.size());
+    }
+
+    @Test
+    public void testReadShipperPhoneList_Failure() throws Exception {
+        // Given a non-existing id
+        int testId = 1000;
+
+        // When
+        this.mockMvc.perform(get(SHIPPER_ENDPOINT_URL + "/" + testId))
+                .andDo(print())
+                // Then
+                .andExpect(status().isNotFound());
+    }
 
     private List<Shipper> getAllShippers() throws Exception {
         String JSON = mockMvc.perform(get(SHIPPER_ENDPOINT_URL))

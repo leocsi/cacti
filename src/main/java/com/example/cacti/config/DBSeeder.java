@@ -13,10 +13,12 @@ import java.util.List;
 @Profile({"mysql"})
 public class DBSeeder implements CommandLineRunner {
     public static final List<Shipper> DB_SEEDER_SHIPPERS = List.of(
-            new Shipper(1L, "Speedy Express", "(503) 555-9831"),
             new Shipper(2L, "United Package", "(503) 555-1234"),
             new Shipper(3L, "Federal Shipping", "(503) 555-4221"),
-            new Shipper(4L, "CocaCola", "(503) 555-4232")
+            new Shipper(4L, "CocaCola", "(503) 555-4232"),
+            new Shipper(5L, "John Doe", "082 65723900"),
+            new Shipper(6L, "John Doe", "082 65723900"),
+            new Shipper(7L, "Speedy Express", "(503) 555-9831")
     );
     @Autowired
     private ShipperRepository shipperRepository;
