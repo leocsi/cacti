@@ -50,12 +50,34 @@ class ShipperControllerTest {
 
     @Test
     public void testGETById_Success() throws Exception {
-        fail();
+        // Given an existing id
+        int testId = 1;
+
+        // When
+        String JSON = this.mockMvc.perform(get(SHIPPER_ENDPOINT_URL + "/" + testId))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        Shipper shipper = objectMapper.readValue(JSON, Shipper.class);
+
+        // Then
+        assertNotNull(shipper);
+        assertEquals(testId, shipper.getId());
     }
 
     @Test
     public void testGETById_Failure() throws Exception {
-        fail();
+        // Given a non-existing id
+        int testId = 1000;
+
+        // When
+        this.mockMvc.perform(get(SHIPPER_ENDPOINT_URL + "/" + testId))
+                .andDo(print())
+                // Then
+                .andExpect(status().isNotFound());
     }
 
 //    @Test
