@@ -2,6 +2,7 @@ package com.example.cacti.controller;
 
 import com.example.cacti.model.Shipper;
 import com.example.cacti.service.ShipperService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -78,6 +79,16 @@ public class ShipperController {
             throw new ResponseStatusException(NOT_FOUND, e.getMessage());
         }
 
+    }
+
+    @PutMapping("/{id}")
+    public Shipper put(@PathVariable Long id, @Valid @RequestBody Shipper shipper) {
+
+        try {
+            return shipperService.updateShipper(id, shipper);
+        } catch (ShipperNotFoundException ex) {
+            throw new ResponseStatusException(NOT_FOUND, ex.getMessage());
+        }
     }
 
 }

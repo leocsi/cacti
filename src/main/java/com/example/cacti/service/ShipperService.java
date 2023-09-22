@@ -48,4 +48,11 @@ public class ShipperService {
         return names;
     }
 
+    public Shipper updateShipper(Long id, Shipper shipper) {
+        // Throw exception for non-existing id
+        this.readShipperById(id);
+        shipper.setId(id);
+        return shipperRepository.save(shipper);
+    }
+
 }

@@ -15,8 +15,7 @@ import java.util.List;
 
 import static com.example.cacti.config.DBSeeder.DB_SEEDER_SHIPPERS;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -142,12 +141,40 @@ class ShipperControllerTest {
     void testPOST_failure() throws Exception {
         fail();
     }
-//
-//    @Test
-//    @DirtiesContext
-//    public void testPUT_Success() throws Exception {
-//        fail();
-//    }
+
+    @Test
+    @DirtiesContext
+    public void testPUT_success() throws Exception {
+        //  Given DB was populated by DBSeeder
+
+        long existingId = 1;
+        String newName = "New name for shipper 1";
+        String newPhone = "095 443422 9987";
+
+        Shipper shipperToUpdate = new Shipper(null, newName, newPhone);
+        String JSONToSend = objectMapper.writeValueAsString(shipperToUpdate);
+
+        List<Shipper> before = getAllShippers();
+
+        // When
+        String JSONFromResponse = this.mockMvc.perform(put(SHIPPER_ENDPOINT_URL + "/" + existingId)
+                        .header("Content-Type", "application/json")
+                        .content(JSONToSend))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        // Then
+        List<Shipper> after = getAllShippers();
+        Shipper shipper1FromDBAfterUpdate = objectMapper.readValue(JSONFromResponse, Shipper.class);
+        assertEquals(newName, shipper1FromDBAfterUpdate.getName());
+        assertEquals(newPhone, shipper1FromDBAfterUpdate.getPhone());
+        assertEquals(before.size(), after.size());
+    }
+
+
 //
 //    @Test
 //    public void testPUT_Failure() throws Exception {
