@@ -3,6 +3,7 @@ package com.example.cacti.controller;
 import com.example.cacti.model.Shipper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hibernate.validator.constraints.Range;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -79,6 +80,25 @@ class ShipperControllerTest {
                 // Then
                 .andExpect(status().isNotFound());
     }
+
+
+    @Test
+    public void testGETByNames() throws Exception {
+        String JSON = mockMvc.perform(
+                        get(SHIPPER_ENDPOINT_URL + "/nameBook")
+                ).andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        List<String> shipperNames = objectMapper.readValue(JSON, new TypeReference<>() {
+        });
+
+        // Then
+        assertFalse(shipperNames.isEmpty());
+        assertEquals(DB_SEEDER_SHIPPERS.size(), shipperNames.size());
+    }
+
 
 //    @Test
 //    void getAll() {

@@ -81,6 +81,16 @@ public class ShipperController {
 
     }
 
+    @GetMapping("/localPhones")
+    List<String> readShipperLocalPhones() {
+        try {
+            return shipperService.getLocalPhoneNumbers();
+        } catch (ShipperNotFoundException e) {
+            throw new ResponseStatusException(NOT_FOUND, e.getMessage());
+        }
+
+    }
+
     @PutMapping("/{id}")
     public Shipper put(@PathVariable Long id, @Valid @RequestBody Shipper shipper) {
 

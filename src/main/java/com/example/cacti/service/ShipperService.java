@@ -48,6 +48,14 @@ public class ShipperService {
         return names;
     }
 
+    public List<String> getLocalPhoneNumbers() {
+        List<String> locals = new ArrayList<>();
+        for(Shipper s : shipperRepository.findAll()) {
+            if(s.getPhone().startsWith("(503)")) locals.add(s.getPhone());
+        }
+        return locals;
+    }
+
     public Shipper updateShipper(Long id, Shipper shipper) {
         // Throw exception for non-existing id
         this.readShipperById(id);
