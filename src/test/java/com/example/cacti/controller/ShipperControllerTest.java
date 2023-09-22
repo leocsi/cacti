@@ -174,23 +174,30 @@ class ShipperControllerTest {
         assertEquals(before.size(), after.size());
     }
 
+    @Test
+    @DirtiesContext
+    public void testDELETE_Success() throws Exception {
+        //  Given DB was populated by DBSeeder
+        long existingID = 1;
 
-//
-//    @Test
-//    public void testPUT_Failure() throws Exception {
-//        fail();
-//    }
-//
-//    @Test
-//    @DirtiesContext
-//    public void testDELETE_Success() throws Exception {
-//        fail();
-//    }
-//
-//    @Test
-//    public void testDELETE_Failure() throws Exception {
-//        fail();
-//    }
+        // When
+        this.mockMvc.perform(delete(SHIPPER_ENDPOINT_URL + "/delete/" + existingID))
+                .andDo(print())
+                // Then
+                .andExpect(status().isOk());
+
+    }
+    @Test
+    public void testDELETE_Failure() throws Exception {
+        //  Given DB was populated by DBSeeder
+        long nonExistingID = 1000;
+
+        // When
+        this.mockMvc.perform(delete(SHIPPER_ENDPOINT_URL + "/delete/" + nonExistingID))
+                .andDo(print())
+                // Then
+                .andExpect(status().isNotFound());
+    }
 
 
     private List<Shipper> getAllShippers() throws Exception {

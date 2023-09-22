@@ -55,4 +55,11 @@ public class ShipperService {
         return shipperRepository.save(shipper);
     }
 
+    public void deleteShipperBy(Long id) {
+        // Throw exception for non-existing id
+        this.readShipperById(id);
+
+        shipperRepository.deleteById(id);
+    }
+
 }
