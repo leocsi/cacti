@@ -16,6 +16,7 @@ import java.util.List;
 import static com.example.cacti.config.DBSeeder.DB_SEEDER_SHIPPERS;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -108,18 +109,39 @@ class ShipperControllerTest {
 //    void readShipperNames() {
 //    }
 
-//    @Test
-//    // After the test, restore the database to the initial state
-//    @DirtiesContext
-//    public void testPOST_success() throws Exception {
-//        fail();
-//    }
-//
-//    @Test
-//    @DirtiesContext
-//    void testPOST_failure() throws Exception {
-//        fail();
-//    }
+    @Test
+    // After the test, restore the database to the initial state
+    @DirtiesContext
+    public void testPOST_success() throws Exception {
+        String testName = "John Doe";
+        String testPhone = "082 65723900";
+
+        Shipper testShipper = new Shipper(null, testName, testPhone);
+        String JSONToSent = objectMapper.writeValueAsString(testShipper);
+
+        List<Shipper> before = getAllShippers();
+
+        // When
+        String JSONReceived = this.mockMvc.perform(post(SHIPPER_ENDPOINT_URL + "/add")
+                        .header("Content-Type", "application/json")
+                        .content(JSONToSent))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+
+        // Then
+        List<Shipper> after = getAllShippers();
+        assertEquals(before.size(), after.size() - 1);
+    }
+
+    @Test
+    @DirtiesContext
+    void testPOST_failure() throws Exception {
+        fail();
+    }
 //
 //    @Test
 //    @DirtiesContext
@@ -143,4 +165,13 @@ class ShipperControllerTest {
 //        fail();
 //    }
 
+
+    private List<Shipper> getAllShippers() throws Exception {
+        String JSON = mockMvc.perform(get(SHIPPER_ENDPOINT_URL))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        return objectMapper.readValue(JSON, new TypeReference<>() {
+        });
+    }
 }
