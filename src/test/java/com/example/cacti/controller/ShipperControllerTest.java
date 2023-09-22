@@ -139,7 +139,20 @@ class ShipperControllerTest {
     @Test
     @DirtiesContext
     void testPOST_failure() throws Exception {
-        fail();
+        // Given
+        String testName = "";
+        String testPhone = "082 65723900";
+
+        Shipper testShipper = new Shipper(null, testName, testPhone);
+        String JSONToSent = objectMapper.writeValueAsString(testShipper);
+
+
+        // When
+        this.mockMvc.perform(post(SHIPPER_ENDPOINT_URL + "/add")
+                        .header("Content-Type", "application/json")
+                        .content(JSONToSent))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
     @Test
